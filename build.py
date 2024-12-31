@@ -4,26 +4,19 @@ import subprocess
 import shutil
 import venv
 from pathlib import Path
+import ctypes
 
-def verify_icon():
-    """Verify that the icon file exists and is accessible."""
-    icon_path = Path("HungerRush_Icon.ico")
-    if not icon_path.exists():
-        print(f"Error: Icon file not found at {icon_path.absolute()}")
-        return False
+def is_admin():
+    """Check if the script is running with admin privileges"""
     try:
-        with open(icon_path, 'rb') as f:
-            # Just try to read the file to ensure it's accessible
-            f.read(10)
-        return True
-    except Exception as e:
-        print(f"Error accessing icon file: {e}")
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
         return False
 
-def run_command(cmd, error_message):
+def run_command(cmd, error_message, shell=False):
     """Run a command and handle any errors"""
     try:
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True, shell=shell)
         return True
     except subprocess.CalledProcessError as e:
         print(f"Error: {error_message}")
@@ -34,21 +27,47 @@ def run_command(cmd, error_message):
         print(f"Unexpected error: {e}")
         return False
 
+def temporarily_disable_defender():
+    """Temporarily disable Windows Defender (requires admin privileges)"""
+    if not is_admin():
+        print("Warning: Admin privileges required to manage Windows Defender")
+        return False
+    
+    try:
+        # Disable real-time monitoring temporarily
+        subprocess.run([
+            'powershell', 
+            'Set-MpPreference', 
+            '-DisableRealtimeMonitoring', 
+            '$true'
+        ], capture_output=True)
+        return True
+    except Exception as e:
+        print(f"Failed to disable Windows Defender: {e}")
+        return False
+
+def restore_defender():
+    """Re-enable Windows Defender"""
+    try:
+        subprocess.run([
+            'powershell', 
+            'Set-MpPreference', 
+            '-DisableRealtimeMonitoring', 
+            '$false'
+        ], capture_output=True)
+    except Exception as e:
+        print(f"Warning: Failed to restore Windows Defender: {e}")
+        print("Please ensure Windows Defender is re-enabled manually")
+
 def build_executable():
     """Build the LogoCraft executable with proper environment setup."""
-    # Get the absolute path to the project directory
     project_dir = Path.cwd()
     venv_dir = project_dir / ".venv"
-
+    
     print(f"Project directory: {project_dir}")
     print(f"Virtual environment directory: {venv_dir}")
 
-    # Verify icon file first
-    print("Verifying icon file...")
-    if not verify_icon():
-        return False
-
-    # Create virtual environment if it doesn't exist
+    # Create virtual environment if needed
     if not venv_dir.exists():
         print("Creating virtual environment...")
         try:
@@ -56,23 +75,12 @@ def build_executable():
         except Exception as e:
             print(f"Error creating virtual environment: {e}")
             return False
-
-    # Get the path to the Python executable in the virtual environment
-    if os.name == 'nt':  # Windows
-        python_path = venv_dir / "Scripts" / "python.exe"
-        pip_path = venv_dir / "Scripts" / "pip.exe"
-    else:  # Unix-like
-        python_path = venv_dir / "bin" / "python"
-        pip_path = venv_dir / "bin" / "pip"
-
+    
+    # Get Python paths
+    python_path = venv_dir / "Scripts" / "python.exe"
     print(f"Using Python at: {python_path}")
-    print(f"Using pip at: {pip_path}")
 
-    if not python_path.exists():
-        print(f"Error: Python executable not found at {python_path}")
-        return False
-
-    # Install required packages
+    # Install requirements
     print("Installing dependencies...")
     if not run_command(
         [str(python_path), "-m", "pip", "install", "-r", "requirements.txt"],
@@ -93,33 +101,51 @@ def build_executable():
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
 
-    # Run PyInstaller
-    print("Building executable...")
-    if not run_command(
-        [str(python_path), "-m", "PyInstaller", "--clean", "LogoCraft.spec"],
-        "Failed to build executable"
-    ):
-        return False
+    # Temporarily disable Windows Defender
+    defender_disabled = temporarily_disable_defender()
+    if not defender_disabled:
+        print("Warning: Building without disabling Windows Defender")
+        print("You may need to add an exclusion manually if the build fails")
+    
+    try:
+        # Build executable
+        print("Building executable...")
+        if not run_command(
+            [str(python_path), "-m", "PyInstaller", "--clean", "LogoCraft.spec"],
+            "Failed to build executable"
+        ):
+            return False
 
-    # Verify the executable was created
-    expected_exe = project_dir / "dist" / "LogoCraft.exe"
-    if not expected_exe.exists():
-        print(f"Error: Expected executable not found at {expected_exe}")
-        return False
+        # Verify the executable
+        expected_exe = project_dir / "dist" / "LogoCraft.exe"
+        if not expected_exe.exists():
+            print(f"Error: Expected executable not found at {expected_exe}")
+            return False
 
-    print("\nBuild process completed successfully!")
-    print(f"Executable can be found at: {expected_exe}")
-    print("\nRecommended next steps:")
-    print("1. Test the executable by double-clicking it")
-    print("2. Try processing a test image to verify functionality")
-    print("3. Check that the icon appears correctly")
-    return True
+        print("\nBuild process completed successfully!")
+        print(f"Executable can be found at: {expected_exe}")
+        
+        return True
+    finally:
+        # Always try to restore Windows Defender
+        if defender_disabled:
+            restore_defender()
 
 if __name__ == "__main__":
-    # Ensure we're running with the correct Python version
+    # Check for admin privileges
+    if not is_admin():
+        print("Warning: Running without admin privileges")
+        print("Some security features may not work correctly")
+    
     print(f"Running with Python {sys.version}")
-    if build_executable():
+    success = build_executable()
+    
+    if success:
         print("\nBuild completed successfully!")
+        print("\nNext steps:")
+        print("1. Test the executable")
+        print("2. If Windows Defender blocks the exe, add it to exclusions")
+        print("3. Verify all functionality works as expected")
     else:
         print("\nBuild failed! Please check the error messages above.")
         sys.exit(1)
