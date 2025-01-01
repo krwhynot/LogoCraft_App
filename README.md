@@ -1,106 +1,97 @@
-# Image Processor Application
+# LogoCraft
 
-A Python desktop application for batch processing images into multiple formats and sizes, with a user-friendly GUI interface.
+LogoCraft is a professional-grade image processing application designed specifically for restaurant logo management. It provides automated conversion of logo files into multiple standardized formats with predefined dimensions optimized for various use cases.
 
 ## Features
 
-- Preview images before processing
-- Multiple output formats:
-  - Logo.png (300x300)
-  - Smalllogo.png (136x136)
-  - KDlogo.png (140x112)
-  - RPTlogo.bmp (135x110)
-  - PRINTLOGO.bmp (Thermal Printer Optimized)
-- Progress tracking during processing
-- Support for various input formats (PNG, JPEG, BMP, GIF)
-- Optimized output for different use cases including thermal printing
-
-## Requirements
-
-- Python 3.x
-- Pillow (PIL)
-- tkinter (usually comes with Python)
+- Clean, intuitive PyQt6-based interface
+- Predefined output formats for common use cases:
+  - Standard logo (300x300 PNG)
+  - Small logo (136x136 PNG)
+  - KD logo (140x112 PNG)
+  - Report logo (155x110 BMP)
+  - Thermal printer optimized format
+- Live image preview
+- Batch processing support
+- Professional-grade image quality preservation
+- Support for multiple input formats (PNG, JPEG, BMP, PSD, HEIF)
 
 ## Installation
 
+### Prerequisites
+- Python 3.8 or higher
+- Windows 10/11 (primary support)
+
+### Setup
 1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd LogoCraft_App
+   ```
+
+2. Create and activate virtual environment:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Building the Executable
+Run the build script:
 ```bash
-git clone [repository-url]
-cd LogoCraft_App
+python build.py
 ```
 
-2. Install dependencies:
-```bash
-pip install pillow
-```
-
-## Project Structure
-
-```
-LogoCraft_App/
-├── src/
-│   ├── __init__.py
-│   ├── main.py              # Application entry point
-│   ├── config.py            # Configuration and format specifications
-│   ├── gui/
-│   │   ├── __init__.py
-│   │   └── main_window.py   # GUI implementation
-│   ├── processors/
-│   │   ├── __init__.py
-│   │   └── image_processor.py # Image processing logic
-│   └── utils/
-│       ├── __init__.py
-│       └── validators.py     # Input validation utilities
-└── README.md
-```
+The executable will be created in the `dist` directory.
 
 ## Usage
 
-1. Run the application:
-```powershell
-$env:PYTHONPATH = $PWD; python -m src.main
-```
+1. Launch LogoCraft
+2. Click "Select Image" or drag and drop a logo file
+3. Choose desired output formats (pre-selected by default)
+4. Select output directory or use default
+5. Click "Process Image"
 
-2. Using the application:
-   - Click "Select Image" to choose an input image
-   - Select desired output formats using checkboxes
-   - Choose an output directory
-   - Click "Process Image" to generate the outputs
-   - Progress bar will show processing status
+## Development
 
-## Output Formats
+### Project Structure
+- `src/`: Source code directory
+  - `gui/`: PyQt6 interface components
+  - `processors/`: Image processing modules
+  - `utils/`: Utility functions
+- `build.py`: Build script
+- `LogoCraft.spec`: PyInstaller configuration
 
-1. **Logo.png (300x300)**
-   - Full-size logo in PNG format
-   - Preserves transparency
-   - Best for web use
+### Dependencies
+Main dependencies include:
+- PyQt6: GUI framework
+- Pillow: Core image processing
+- pillow-heif: HEIF format support
+- psd-tools: Photoshop file support
+- numpy/scipy: Image manipulation
+- scikit-image: Additional transformations
 
-2. **Smalllogo.png (136x136)**
-   - Reduced size logo
-   - Maintains transparency
-   - Suitable for thumbnails
+### Building from Source
+1. Ensure all dependencies are installed
+2. Run build script with Python 3.8+
+3. Check `dist` directory for executable
 
-3. **KDlogo.png (140x112)**
-   - Custom dimension logo
-   - Preserves transparency
-   - Optimized for specific display areas
+## Recent Updates
+- Migrated to PyQt6 for improved interface
+- Implemented standardized output formats
+- Enhanced preview capabilities
+- Improved build process reliability
+- Added professional-grade image processing pipeline
 
-4. **RPTlogo.bmp (135x110)**
-   - Bitmap format
-   - White background
-   - Compatible with legacy systems
+## Contributing
+Contributions are welcome! Please read our contributing guidelines and submit pull requests for any enhancements.
 
-5. **PRINTLOGO.bmp**
-   - Thermal printer optimized
-   - 1-bit color depth
-   - Specifically designed for receipt printers
+## License
+[License Information]
 
-## Error Handling
-
-The application includes comprehensive error handling for:
-- Invalid input files
-- Unsupported file formats
-- Write permission issues
-- Processing failures
-
-Error messages are displayed in pop-up dialogs and logged for troubleshooting.
+## Support
+For support, please open an issue in the repository or contact the development team.

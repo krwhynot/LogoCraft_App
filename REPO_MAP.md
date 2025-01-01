@@ -1,123 +1,60 @@
-# Repository Map
+# LogoCraft Repository Structure
+
+## Overview
+LogoCraft is a professional image processing application designed for restaurant logo format conversion. The application uses PyQt6 for its GUI and supports multiple image formats with predefined output sizes optimized for various use cases.
 
 ## Directory Structure
+
 ```
 LogoCraft_App/
-├── src/                      # Source code root
-│   ├── __init__.py          # Makes src a Python package
-│   ├── main.py              # Application entry point
-│   ├── config.py            # Configuration settings
-│   ├── gui/                 # GUI components
-│   │   ├── __init__.py
-│   │   └── main_window.py   # Main window implementation
-│   ├── processors/          # Image processing logic
-│   │   ├── __init__.py
-│   │   └── image_processor.py
-│   └── utils/               # Utility functions
-│       ├── __init__.py
-│       └── validators.py
-├── README.md                # Project documentation
-└── REPO_MAP.md              # This file
+├── .git/                  # Git repository data
+├── .venv/                 # Python virtual environment
+├── src/                   # Source code directory
+│   ├── gui/              # GUI components
+│   │   ├── __init__.py   # GUI package initialization
+│   │   └── main_window.py # Main application window implementation
+│   ├── processors/       # Image processing components
+│   ├── utils/           # Utility functions
+│   ├── __init__.py      # Main package initialization
+│   └── main.py          # Application entry point
+├── build.py              # Build script for creating executable
+├── requirements.txt      # Python package dependencies
+├── LogoCraft.spec        # PyInstaller specification file
+├── HungerRush_Icon.ico   # Application icon
+├── README.md            # Project documentation
+└── REPO_MAP.md          # This file - repository structure documentation
 ```
 
-## Component Relationships
+## Key Components
 
-```mermaid
-graph TD
-    A[main.py] --> B[gui/main_window.py]
-    B --> C[config.py]
-    B --> D[processors/image_processor.py]
-    B --> E[utils/validators.py]
-    D --> C
-    E --> C
-```
+### GUI (PyQt6-based)
+- `main_window.py`: Implements the main application window with:
+  - Image preview area
+  - Predefined output format options
+  - Directory selection
+  - Process control and progress tracking
 
-## Component Descriptions
+### Build System
+- `build.py`: Handles executable creation with:
+  - Virtual environment management
+  - Dependency installation
+  - PyInstaller compilation
+  - Windows Defender management for build process
 
-### 1. Entry Point
-- **main.py**
-  - Initializes logging
-  - Creates GUI instance
-  - Starts application
+### Configuration
+- `requirements.txt`: Manages project dependencies including:
+  - PyQt6 for GUI
+  - Pillow for image processing
+  - Additional format support (HEIF, PSD)
+  - Image processing libraries (numpy, scipy, scikit-image)
 
-### 2. Configuration
-- **config.py**
-  - Defines `OutputFormat` class for format specifications
-  - Contains `Config` class with:
-    - Supported input formats
-    - Output format configurations
-    - Image processing parameters
+### Resources
+- `HungerRush_Icon.ico`: Application icon file
+- `LogoCraft.spec`: PyInstaller configuration for executable creation
 
-### 3. GUI Layer
-- **gui/main_window.py**
-  - Implements `ImageProcessorGUI` class
-  - Manages:
-    - Image preview
-    - Format selection
-    - Directory selection
-    - Progress tracking
-    - Error handling
-
-### 4. Processing Layer
-- **processors/image_processor.py**
-  - Implements `ImageProcessor` class
-  - Handles:
-    - Image loading
-    - Format conversion
-    - Size adjustments
-    - Color mode processing
-
-### 5. Utilities
-- **utils/validators.py**
-  - Input validation functions
-  - File system checks
-  - Format verification
-
-## Data Flow
-
-1. User selects input image → `main_window.py`
-2. Image loaded and previewed → `image_processor.py`
-3. User selects output formats → `main_window.py`
-4. Processing triggered → `image_processor.py`
-5. Output saved to selected directory
-
-## Key Features Implementation
-
-### Image Preview
-```python
-# main_window.py
-def _update_preview(self, image_path):
-    # Load and resize image for preview
-    # Display in GUI
-```
-
-### Format Processing
-```python
-# image_processor.py
-def process_image(image, format_spec, output_name):
-    # Resize image
-    # Convert color mode
-    # Apply optimizations
-```
-
-### Progress Tracking
-```python
-# main_window.py
-def _process_image(self):
-    # Update progress bar
-    # Handle multiple formats
-    # Show completion status
-```
-
-## Configuration Example
-```python
-# config.py
-OUTPUT_FORMATS = {
-    'Logo.png': OutputFormat(
-        dimensions=(300, 300),
-        mode='RGBA',
-        format='PNG'
-    ),
-    # ... other formats
-}
-```
+## Recent Updates
+- Migrated GUI framework from Tkinter to PyQt6
+- Implemented new interface layout matching specification
+- Added predefined output formats with specific dimensions
+- Updated build configuration for PyQt6 compatibility
+- Enhanced preview capabilities and file handling
