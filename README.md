@@ -26,7 +26,7 @@ A Python desktop application for batch processing images into multiple formats a
 1. Clone the repository:
 ```bash
 git clone [repository-url]
-cd GPT_Image_App
+cd LogoCraft_App
 ```
 
 2. Install dependencies:
@@ -37,7 +37,7 @@ pip install pillow
 ## Project Structure
 
 ```
-GPT_Image_App/
+LogoCraft_App/
 ├── src/
 │   ├── __init__.py
 │   ├── main.py              # Application entry point

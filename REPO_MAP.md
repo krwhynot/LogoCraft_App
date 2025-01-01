@@ -2,7 +2,7 @@
 
 ## Directory Structure
 ```
-GPT_Image_App/
+LogoCraft_App/
 ├── src/                      # Source code root
 │   ├── __init__.py          # Makes src a Python package
 │   ├── main.py              # Application entry point
@@ -120,3 +120,4 @@ OUTPUT_FORMATS = {
     ),
     # ... other formats
 }
+```
