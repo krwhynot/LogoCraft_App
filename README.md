@@ -25,7 +25,7 @@ LogoCraft is a professional-grade image processing application designed specific
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/krwhynot/LogoCraft_App.git
    cd LogoCraft_App
    ```
 
