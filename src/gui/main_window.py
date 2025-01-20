@@ -13,67 +13,83 @@ QMainWindow {
 }
 QGroupBox {
     font-weight: bold;
-    border: 1px solid #636369;  /* Cool Gray */
-    border-radius: 6px;
+    border: 1px solid #636369;
+    border-radius: 4px;
     margin-top: 6px;
-    padding-top: 10px;
-    color: #231347;  /* Deep Navy */
+    padding-top: 8px;
+    color: #231347;
     background-color: white;
 }
 QGroupBox::title {
     subcontrol-origin: margin;
-    left: 7px;
-    padding: 0px 5px 0px 5px;
+    left: 6px;
+    padding: 0px 3px;
 }
 QPushButton {
-    background-color: #108375;  /* Teal Green */
+    background-color: #108375;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    min-width: 80px;
+    border-radius: 3px;
+    padding: 5px 10px;
+    min-width: 70px;
+    font-weight: bold;
 }
 QPushButton:hover {
-    background-color: #9FCDC7;  /* 60% lighter Teal Green */
+    background-color: #9FCDC7;
 }
 QPushButton:disabled {
-    background-color: #636369;  /* Cool Gray */
+    background-color: #636369;
 }
 QLineEdit {
     padding: 4px;
-    border: 1px solid #636369;  /* Cool Gray */
-    border-radius: 4px;
+    border: 1px solid #636369;
+    border-radius: 3px;
     background-color: white;
+    min-height: 20px;
 }
 QProgressBar {
-    border: 1px solid #636369;  /* Cool Gray */
-    border-radius: 4px;
+    border: 1px solid #636369;
+    border-radius: 3px;
     text-align: center;
     background-color: white;
+    max-height: 12px;
 }
 QProgressBar::chunk {
-    background-color: #108096;  /* Teal Blue */
+    background-color: #108375;
+    border-radius: 2px;
 }
 QCheckBox {
     spacing: 8px;
-    color: #231347;  /* Deep Navy */
+    color: #231347;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 2px 0px;
+}
+QCheckBox:hover {
+    background-color: #f0f0f0;
+    border: 1px solid #108375;
 }
 QCheckBox::indicator {
     width: 18px;
     height: 18px;
-}
-QCheckBox::indicator:checked {
-    background-color: #108375;  /* Teal Green */
-    border: 2px solid #108375;
-    border-radius: 2px;
+    border-radius: 3px;
+    background-color: white;
 }
 QCheckBox::indicator:unchecked {
-    background-color: white;
-    border: 2px solid #636369;  /* Cool Gray */
-    border-radius: 2px;
+    border: 2px solid #636369;
+}
+QCheckBox::indicator:checked {
+    border: 2px solid #108375;
+    background-color: #108375;
+    image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
 }
 QLabel {
-    color: #231347;  /* Deep Navy */
+    color: #231347;
+}
+QStatusBar {
+    background-color: #f5f5f5;
+    color: #231347;
+    padding: 2px 4px;
 }
 """
 
@@ -81,16 +97,17 @@ class DraggableImageLabel(QLabel):
     def __init__(self):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setMinimumSize(300, 250)
+        self.setMinimumSize(250, 200)
         self.setStyleSheet("""
             QLabel {
                 background-color: white;
-                border: 2px dashed #636369;  /* Cool Gray */
-                border-radius: 8px;
-                color: #231347;  /* Deep Navy */
+                border: 2px dashed #636369;
+                border-radius: 4px;
+                color: #231347;
+                padding: 4px;
             }
             QLabel:hover {
-                border-color: #108375;  /* Teal Green */
+                border-color: #108375;
             }
         """)
         self.dragging = False
@@ -100,7 +117,6 @@ class DraggableImageLabel(QLabel):
         self.setWordWrap(True)
         self.setAcceptDrops(True)
 
-    # [Previous DraggableImageLabel methods remain unchanged...]
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
             for url in event.mimeData().urls():
@@ -156,33 +172,34 @@ class ImageProcessorGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("LogoCraft Image Processor")
-        self.setMinimumSize(500, 700)
+        self.setMinimumSize(400, 600)
         self.setStyleSheet(STYLESHEET)
 
         # Create main widget and layout
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
         main_layout = QVBoxLayout(main_widget)
-        main_layout.setSpacing(8)
-        main_layout.setContentsMargins(8, 8, 8, 8)
+        main_layout.setSpacing(6)
+        main_layout.setContentsMargins(6, 6, 6, 6)
 
         # Preview section
         preview_group = QGroupBox("Image Preview")
         preview_layout = QVBoxLayout(preview_group)
-        preview_layout.setSpacing(8)
-        preview_layout.setContentsMargins(8, 16, 8, 8)
+        preview_layout.setSpacing(4)
+        preview_layout.setContentsMargins(6, 12, 6, 6)
 
         self.preview_label = DraggableImageLabel()
         preview_layout.addWidget(self.preview_label)
 
         preview_controls = QHBoxLayout()
+        preview_controls.setSpacing(4)
         self.select_button = QPushButton("Select Image")
         self.select_button.clicked.connect(self.select_files)
         preview_controls.addWidget(self.select_button)
 
         self.file_status_label = QLabel("No file selected")
         self.file_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.file_status_label.setStyleSheet("color: #636369;")  # Cool Gray
+        self.file_status_label.setStyleSheet("color: #636369; font-size: 9pt;")
         preview_controls.addWidget(self.file_status_label)
         preview_layout.addLayout(preview_controls)
 
@@ -191,43 +208,44 @@ class ImageProcessorGUI(QMainWindow):
         # Output options
         output_group = QGroupBox("Output Options")
         output_layout = QVBoxLayout(output_group)
-        output_layout.setSpacing(4)
-        output_layout.setContentsMargins(8, 16, 8, 8)
+        output_layout.setSpacing(2)
+        output_layout.setContentsMargins(6, 12, 6, 6)
 
-        # Predefined output formats
         self.format_checks = {}
         formats = [
-            ('Logo.png (300x300)', 'Logo.png'),
-            ('Smalllogo.png (136x136)', 'Smalllogo.png'),
-            ('KDlogo.png (140x112)', 'KDlogo.png'),
-            ('RPTlogo.bmp (155x110)', 'RPTlogo.bmp'),
-            ('PRINTLOGO.bmp (Thermal Printer Optimized)', 'PRINTLOGO.bmp')
+            ('Logo (300×300)', 'Logo.png'),
+            ('Small Logo (136×136)', 'Smalllogo.png'),
+            ('KD Logo (140×112)', 'KDlogo.png'),
+            ('RPT Logo (155×110)', 'RPTlogo.bmp'),
+            ('Print Logo (Thermal)', 'PRINTLOGO.bmp')
         ]
 
-        for label, size in formats:
+        for label, filename in formats:
             cb = QCheckBox(label)
             cb.setChecked(True)
-            cb.setStyleSheet("QCheckBox { font-size: 10pt; }")
-            self.format_checks[size] = cb
+            cb.setStyleSheet("QCheckBox { font-size: 9pt; }")
+            self.format_checks[filename] = cb
             output_layout.addWidget(cb)
 
         main_layout.addWidget(output_group)
 
         # Process section with output directory
-        process_group = QGroupBox("Output Directory & Processing")
+        process_group = QGroupBox("Output & Processing")
         process_layout = QVBoxLayout(process_group)
-        process_layout.setSpacing(8)
-        process_layout.setContentsMargins(8, 16, 8, 8)
+        process_layout.setSpacing(4)
+        process_layout.setContentsMargins(6, 12, 6, 6)
 
         dir_layout = QHBoxLayout()
-        dir_layout.setSpacing(8)
+        dir_layout.setSpacing(4)
 
         self.dir_path = QLineEdit()
+        self.dir_path.setStyleSheet("font-size: 9pt;")
         default_desktop = os.path.join(os.path.expanduser("~"), "Desktop")
         self.dir_path.setText(default_desktop.replace('/', '\\'))
         dir_layout.addWidget(self.dir_path)
 
         self.browse_button = QPushButton("Browse")
+        self.browse_button.setMaximumWidth(70)
         self.browse_button.clicked.connect(self.browse_directory)
         dir_layout.addWidget(self.browse_button)
 
@@ -244,31 +262,22 @@ class ImageProcessorGUI(QMainWindow):
 
         main_layout.addWidget(process_group)
 
-        # Supported formats in a more compact layout
-        formats_group = QGroupBox("Supported Formats")
+        # Supported formats
+        formats_group = QGroupBox("Formats")
         formats_layout = QVBoxLayout(formats_group)
         formats_layout.setSpacing(2)
-        formats_layout.setContentsMargins(8, 16, 8, 8)
+        formats_layout.setContentsMargins(6, 12, 6, 6)
 
-        formats_info = QLabel(
-            "PNG • JPEG/JPG • GIF • TIFF • WebP • BMP"
-        )
-        formats_info.setStyleSheet("color: #636369; font-size: 10pt;")  # Cool Gray
+        formats_info = QLabel("PNG • JPEG/JPG • GIF • TIFF • WebP • BMP")
+        formats_info.setStyleSheet("color: #636369; font-size: 8pt;")
         formats_info.setWordWrap(True)
         formats_layout.addWidget(formats_info)
         
         main_layout.addWidget(formats_group)
 
-        # Set stretch factors
-        main_layout.setStretch(0, 2)  # Preview
-        main_layout.setStretch(1, 1)  # Output options
-        main_layout.setStretch(2, 1)  # Process section
-        main_layout.setStretch(3, 0)  # Formats (minimal space)
-
         # Initialize variables
         self.current_file = None
 
-    # [Previous methods remain unchanged...]
     def select_files(self):
         file_name, _ = QFileDialog.getOpenFileName(
             self,
@@ -289,7 +298,7 @@ class ImageProcessorGUI(QMainWindow):
         try:
             pixmap = QPixmap(file_path)
             if not pixmap.isNull():
-                max_size = 230
+                max_size = 180
                 scale_factor = min(
                     max_size / pixmap.width(),
                     max_size / pixmap.height()
