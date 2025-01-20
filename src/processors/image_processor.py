@@ -88,10 +88,10 @@ class ImageProcessor:
             print("Creating 600x256 white canvas")
             final_image = Image.new('RGB', (600, 256), (255, 255, 255))
 
-            # Calculate position to right-align and center vertically
-            x_offset = 600 - new_width - 50  # Right align with 50px margin
+            # Calculate position to center horizontally at x=300 and center vertically
+            x_offset = 300 - (new_width // 2)  # Center at x=300
             y_offset = (256 - new_height) // 2  # Center vertically
-            print(f"New size: {new_width}x{new_height}, Position: ({x_offset}, {y_offset})")
+            print(f"New size: {new_width}x{new_height}, Center Position: (300, {256//2})")
 
             # Paste resized image onto canvas
             print("Pasting image onto canvas")
