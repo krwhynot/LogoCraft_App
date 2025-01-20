@@ -1,4 +1,5 @@
 import sys
+import os
 import logging
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
@@ -19,9 +20,19 @@ def main():
     """Main application entry point"""
     try:
         app = QApplication(sys.argv)
-        app.setWindowIcon(QIcon('HungerRush_Icon.ico'))
+        
+        # Get the absolute path to the icon
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        icon_path = os.path.join(base_dir, 'HungerRush_Icon.ico')
+        
+        if os.path.exists(icon_path):
+            app.setWindowIcon(QIcon(icon_path))
+            logger.info(f"Icon loaded from {icon_path}")
+        else:
+            logger.warning(f"Icon not found at {icon_path}")
 
         window = ImageProcessorGUI()
+        window.setWindowIcon(QIcon(icon_path))  # Also set icon for the main window
         window.show()
 
         logger.info("Application started successfully")
