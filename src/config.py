@@ -9,10 +9,11 @@ class OutputFormat:
     format: str
     colors: Optional[int] = None
     background: Optional[Tuple[int, int, int]] = None
+    is_thermal_printer: bool = False  # Flag for thermal printer optimization
 
 class Config:
     """Application configuration and constants."""
-    SUPPORTED_FORMATS = ('.psd', '.png', '.jpeg', '.jpg', '.bmp', '.gif')
+    SUPPORTED_FORMATS = ('.png', '.jpeg', '.jpg', '.bmp', '.gif')
     OUTPUT_FORMATS = {
         'Logo.png': OutputFormat(
             dimensions=(300, 300),
@@ -36,10 +37,9 @@ class Config:
             background=(255, 255, 255)
         ),
         'PRINTLOGO.bmp': OutputFormat(
-            dimensions=(256, 256),
-            mode='P',
+            dimensions=(600, 256),
+            mode='RGB',  # Keep original color mode
             format='BMP',
-            colors=256,
-            background=(255, 255, 255)
+            is_thermal_printer=True  # Enable thermal printer optimizations
         )
     }

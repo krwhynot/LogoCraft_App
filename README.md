@@ -1,97 +1,89 @@
-# LogoCraft
+# LogoCraft: Professional Logo Conversion Solution
 
-LogoCraft is a professional-grade image processing application designed specifically for restaurant logo management. It provides automated conversion of logo files into multiple standardized formats with predefined dimensions optimized for various use cases.
+## Application Overview
 
-## Features
+LogoCraft streamlines logo management for restaurant businesses, providing a professional-grade image conversion platform. Our application efficiently transforms logos across multiple formats to meet diverse business communication needs.
 
-- Clean, intuitive PyQt6-based interface
-- Predefined output formats for common use cases:
-  - Standard logo (300x300 PNG)
-  - Small logo (136x136 PNG)
-  - KD logo (140x112 PNG)
-  - Report logo (155x110 BMP)
-  - Thermal printer optimized format
-- Live image preview
-- Batch processing support
-- Professional-grade image quality preservation
-- Support for multiple input formats (PNG, JPEG, BMP, PSD, HEIF)
+## Core Capabilities
 
-## Installation
+### Supported Image Formats
+- PNG
+- JPEG
+- BMP
+- Photoshop Files (PSD)
+- HEIF Images
 
-### Prerequisites
-- Python 3.8 or higher
-- Windows 10/11 (primary support)
+### Standardized Output Configurations
+- Standard logo (300x300 PNG)
+- Compact logo (136x136 PNG)
+- Kitchen Display logo (140x112 PNG)
+- Report logo (155x110 BMP)
+- Print-optimized format
 
-### Setup
-1. Clone the repository:
+## System Prerequisites
+
+### Technical Requirements
+- Operating System: Windows 10/11
+- Python Version: 3.8+
+- Recommended: Isolated development environment
+
+## Implementation Guide
+
+### Quick Setup Process
+
+1. Repository Acquisition
    ```bash
    git clone https://github.com/krwhynot/LogoCraft_App.git
    cd LogoCraft_App
    ```
 
-2. Create and activate virtual environment:
+2. Environment Configuration
    ```bash
    python -m venv .venv
-   .venv\Scripts\activate
+   .venv\Scripts\activate  # Windows
+   source .venv/bin/activate  # macOS/Linux
    ```
 
-3. Install dependencies:
+3. Dependency Installation
    ```bash
    pip install -r requirements.txt
    ```
 
-### Building the Executable
-Run the build script:
+## Operational Workflow
+
+1. Launch Application
+2. Select Source Logo
+3. Choose Desired Output Formats
+4. Specify Destination Directory
+5. Execute Conversion
+
+## Technical Architecture
+
+### Key Technologies
+- PyQt6: Modern UI Framework
+- Pillow: Advanced Image Processing
+- pillow-heif: Specialized Format Support
+
+### Deployment
 ```bash
 python build.py
 ```
 
-The executable will be created in the `dist` directory.
+## Collaboration Opportunities
 
-## Usage
+### Contribution Framework
+- Comprehensive issue reporting welcomed
+- Structured pull request process
+- Adherence to coding standards expected
 
-1. Launch LogoCraft
-2. Click "Select Image" or drag and drop a logo file
-3. Choose desired output formats (pre-selected by default)
-4. Select output directory or use default
-5. Click "Process Image"
+## Performance Metrics
+- Multi-format conversion
+- Efficient processing
+- Consistent output quality
 
-## Development
+## Support Channels
+- GitHub Issue Tracking
+- Direct Technical Communication
+- Continuous Improvement Commitment
 
-### Project Structure
-- `src/`: Source code directory
-  - `gui/`: PyQt6 interface components
-  - `processors/`: Image processing modules
-  - `utils/`: Utility functions
-- `build.py`: Build script
-- `LogoCraft.spec`: PyInstaller configuration
-
-### Dependencies
-Main dependencies include:
-- PyQt6: GUI framework
-- Pillow: Core image processing
-- pillow-heif: HEIF format support
-- psd-tools: Photoshop file support
-- numpy/scipy: Image manipulation
-- scikit-image: Additional transformations
-
-### Building from Source
-1. Ensure all dependencies are installed
-2. Run build script with Python 3.8+
-3. Check `dist` directory for executable
-
-## Recent Updates
-- Migrated to PyQt6 for improved interface
-- Implemented standardized output formats
-- Enhanced preview capabilities
-- Improved build process reliability
-- Added professional-grade image processing pipeline
-
-## Contributing
-Contributions are welcome! Please read our contributing guidelines and submit pull requests for any enhancements.
-
-## License
-[License Information]
-
-## Support
-For support, please open an issue in the repository or contact the development team.
+**Professional Recommendation**: Maintain original logo archives for reference and version control.

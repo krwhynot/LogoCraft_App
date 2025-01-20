@@ -1,60 +1,67 @@
-# LogoCraft Repository Structure
+# LogoCraft Repository Map
 
-## Overview
-LogoCraft is a professional image processing application designed for restaurant logo format conversion. The application uses PyQt6 for its GUI and supports multiple image formats with predefined output sizes optimized for various use cases.
+## 📂 Project Structure
 
-## Directory Structure
+### Root Directory
+- `README.md`: Project overview and documentation
+- `REPO_MAP.md`: Detailed repository structure
+- `requirements.txt`: Python package dependencies
+- `build.py`: PyInstaller build script
+- `run.py`: Application entry point
+- `file_version_info.txt`: Windows executable metadata
+- `HungerRush_Icon.ico`: Application icon
+- `logocraft.log`: Application log file
+- `.gitignore`: Version control ignore rules
 
+### Configuration and Migration Docs
+- `Project Migration Requirements and Setup.md`: PyQt6 migration details
+- `PyQt6 Migration Testing Strategy.md`: Testing approach documentation
+
+### Source Code (`src/`)
 ```
-LogoCraft_App/
-├── .git/                  # Git repository data
-├── .venv/                 # Python virtual environment
-├── src/                   # Source code directory
-│   ├── gui/              # GUI components
-│   │   ├── __init__.py   # GUI package initialization
-│   │   └── main_window.py # Main application window implementation
-│   ├── processors/       # Image processing components
-│   ├── utils/           # Utility functions
-│   ├── __init__.py      # Main package initialization
-│   └── main.py          # Application entry point
-├── build.py              # Build script for creating executable
-├── requirements.txt      # Python package dependencies
-├── LogoCraft.spec        # PyInstaller specification file
-├── HungerRush_Icon.ico   # Application icon
-├── README.md            # Project documentation
-└── REPO_MAP.md          # This file - repository structure documentation
+src/
+│
+├── gui/                    # User Interface Components
+│   ├── main_window.py      # Primary application window
+│   ├── dialogs.py          # Custom dialog implementations
+│   └── widgets.py          # Reusable widget components
+│
+├── processors/             # Image Processing Logic
+│   ├── image_converter.py  # Core conversion algorithms
+│   ├── format_handlers.py  # Output format specifications
+│   └── quality_control.py  # Image quality preservation
+│
+└── utils/                  # Utility Functions
+    ├── config.py           # Configuration management
+    ├── logging.py          # Logging utilities
+    └── helpers.py          # General helper functions
 ```
 
-## Key Components
+### Virtual Environment
+- `.venv/`: Python virtual environment
+  - Contains isolated project dependencies
 
-### GUI (PyQt6-based)
-- `main_window.py`: Implements the main application window with:
-  - Image preview area
-  - Predefined output format options
-  - Directory selection
-  - Process control and progress tracking
+## 🔧 Development Workflow
+1. Virtual Environment Setup
+2. Dependency Installation
+3. Testing
+4. Build Process
+5. Executable Generation
 
-### Build System
-- `build.py`: Handles executable creation with:
-  - Virtual environment management
-  - Dependency installation
-  - PyInstaller compilation
-  - Windows Defender management for build process
+## 🧪 Testing Framework
+- Unit Testing: Individual component verification
+- Integration Testing: Cross-component interactions
+- Performance Testing: Resource utilization
 
-### Configuration
-- `requirements.txt`: Manages project dependencies including:
-  - PyQt6 for GUI
-  - Pillow for image processing
-  - Additional format support (HEIF, PSD)
-  - Image processing libraries (numpy, scipy, scikit-image)
+## 🚀 Build and Deployment
+- `build.py`: Handles PyInstaller packaging
+- Generates standalone executable in `dist/` directory
 
-### Resources
-- `HungerRush_Icon.ico`: Application icon file
-- `LogoCraft.spec`: PyInstaller configuration for executable creation
+## 📦 Dependency Management
+- `requirements.txt`: Tracks all Python package dependencies
+- Key dependencies include PyQt6, Pillow, pillow-heif
 
-## Recent Updates
-- Migrated GUI framework from Tkinter to PyQt6
-- Implemented new interface layout matching specification
-- Added predefined output formats with specific dimensions
-- Updated build configuration for PyQt6 compatibility
-- Enhanced preview capabilities and file handling
+## 🔄 Migration Notes
+- Transitioned from previous GUI framework to PyQt6
+- Maintained core image processing logic
+- Enhanced user interface and performance
