@@ -97,13 +97,12 @@ class ImageProcessor:
             print("Pasting image onto canvas")
             final_image.paste(img, (x_offset, y_offset))
 
-            # Set DPI to 203 (converting from DPI to pixels per meter)
+            # Set DPI to 203
             dpi = 203
-            ppm = int(math.ceil(dpi * 39.3701))  # Convert DPI to Pixels/Meter
 
             # Save as uncompressed BMP with specific DPI
             print(f"Saving BMP with {dpi} DPI")
-            final_image.save(output_path, 'BMP', resolution=(ppm, ppm))
+            final_image.save(output_path, 'BMP', dpi=(dpi, dpi))
 
             print("Image converted and saved successfully")
 
@@ -176,13 +175,12 @@ class ImageProcessor:
             print("Pasting image onto white canvas")
             canvas.paste(img, (0, 0))
 
-            # Set DPI to 203 (converting from DPI to pixels per meter)
+            # Set DPI to 203
             dpi = 203
-            ppm = int(math.ceil(dpi * 39.3701))  # Convert DPI to Pixels/Meter
 
             # Save as uncompressed BMP with specific DPI
             print(f"Saving BMP with {dpi} DPI")
-            canvas.save(output_path, 'BMP', resolution=(ppm, ppm))
+            canvas.save(output_path, 'BMP', dpi=(dpi, dpi))
 
             print("Image converted and saved successfully")
 
