@@ -1,22 +1,24 @@
 import os
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QPushButton, QLabel, QFileDialog,
-    QProgressBar, QCheckBox, QLineEdit, QGroupBox, QGridLayout,
-    QSizePolicy, QVBoxLayout, QHBoxLayout
+    QProgressBar, QCheckBox, QLineEdit, QGroupBox, QVBoxLayout,
+    QHBoxLayout, QSizePolicy
 )
-from PyQt6.QtCore import Qt, QPoint, QMimeData
+from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QPixmap, QMouseEvent, QDragEnterEvent, QDropEvent
 
 STYLESHEET = """
 QMainWindow {
-    background-color: #f0f0f0;
+    background-color: #f5f5f5;
 }
 QGroupBox {
     font-weight: bold;
-    border: 1px solid #cccccc;
+    border: 1px solid #636369;  /* Cool Gray */
     border-radius: 6px;
     margin-top: 6px;
     padding-top: 10px;
+    color: #231347;  /* Deep Navy */
+    background-color: white;
 }
 QGroupBox::title {
     subcontrol-origin: margin;
@@ -24,7 +26,7 @@ QGroupBox::title {
     padding: 0px 5px 0px 5px;
 }
 QPushButton {
-    background-color: #0078d4;
+    background-color: #108375;  /* Teal Green */
     color: white;
     border: none;
     border-radius: 4px;
@@ -32,30 +34,46 @@ QPushButton {
     min-width: 80px;
 }
 QPushButton:hover {
-    background-color: #106ebe;
+    background-color: #9FCDC7;  /* 60% lighter Teal Green */
 }
 QPushButton:disabled {
-    background-color: #cccccc;
+    background-color: #636369;  /* Cool Gray */
 }
 QLineEdit {
     padding: 4px;
-    border: 1px solid #cccccc;
+    border: 1px solid #636369;  /* Cool Gray */
     border-radius: 4px;
+    background-color: white;
 }
 QProgressBar {
-    border: 1px solid #cccccc;
+    border: 1px solid #636369;  /* Cool Gray */
     border-radius: 4px;
     text-align: center;
+    background-color: white;
 }
 QProgressBar::chunk {
-    background-color: #0078d4;
+    background-color: #108096;  /* Teal Blue */
 }
 QCheckBox {
     spacing: 8px;
+    color: #231347;  /* Deep Navy */
 }
 QCheckBox::indicator {
     width: 18px;
     height: 18px;
+}
+QCheckBox::indicator:checked {
+    background-color: #108375;  /* Teal Green */
+    border: 2px solid #108375;
+    border-radius: 2px;
+}
+QCheckBox::indicator:unchecked {
+    background-color: white;
+    border: 2px solid #636369;  /* Cool Gray */
+    border-radius: 2px;
+}
+QLabel {
+    color: #231347;  /* Deep Navy */
 }
 """
 
@@ -63,15 +81,16 @@ class DraggableImageLabel(QLabel):
     def __init__(self):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setMinimumSize(300, 300)
+        self.setMinimumSize(300, 250)
         self.setStyleSheet("""
             QLabel {
                 background-color: white;
-                border: 2px dashed #cccccc;
+                border: 2px dashed #636369;  /* Cool Gray */
                 border-radius: 8px;
+                color: #231347;  /* Deep Navy */
             }
             QLabel:hover {
-                border-color: #0078d4;
+                border-color: #108375;  /* Teal Green */
             }
         """)
         self.dragging = False
@@ -81,10 +100,9 @@ class DraggableImageLabel(QLabel):
         self.setWordWrap(True)
         self.setAcceptDrops(True)
 
+    # [Previous DraggableImageLabel methods remain unchanged...]
     def dragEnterEvent(self, event: QDragEnterEvent):
-        """Handle drag enter events for files"""
         if event.mimeData().hasUrls():
-            # Check if at least one URL is a supported image file
             for url in event.mimeData().urls():
                 file_path = url.toLocalFile()
                 if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp')):
@@ -93,12 +111,10 @@ class DraggableImageLabel(QLabel):
         event.ignore()
 
     def dropEvent(self, event: QDropEvent):
-        """Handle drop events for files"""
         if event.mimeData().hasUrls():
             for url in event.mimeData().urls():
                 file_path = url.toLocalFile()
                 if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp')):
-                    # Get reference to main window to process the file
                     main_window = self.window()
                     if isinstance(main_window, ImageProcessorGUI):
                         main_window.process_selected_file(file_path)
@@ -140,62 +156,43 @@ class ImageProcessorGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("LogoCraft Image Processor")
-        self.setMinimumSize(900, 600)
+        self.setMinimumSize(500, 700)
         self.setStyleSheet(STYLESHEET)
 
         # Create main widget and layout
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
-        main_layout = QGridLayout(main_widget)
-        main_layout.setSpacing(10)
-        main_layout.setContentsMargins(10, 10, 10, 10)
+        main_layout = QVBoxLayout(main_widget)
+        main_layout.setSpacing(8)
+        main_layout.setContentsMargins(8, 8, 8, 8)
 
-        # Left side - Preview section
+        # Preview section
         preview_group = QGroupBox("Image Preview")
-        preview_group.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         preview_layout = QVBoxLayout(preview_group)
-        preview_layout.setSpacing(10)
-        preview_layout.setContentsMargins(10, 20, 10, 10)
+        preview_layout.setSpacing(8)
+        preview_layout.setContentsMargins(8, 16, 8, 8)
 
         self.preview_label = DraggableImageLabel()
-        self.preview_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         preview_layout.addWidget(self.preview_label)
 
+        preview_controls = QHBoxLayout()
         self.select_button = QPushButton("Select Image")
         self.select_button.clicked.connect(self.select_files)
-        preview_layout.addWidget(self.select_button)
+        preview_controls.addWidget(self.select_button)
 
         self.file_status_label = QLabel("No file selected")
         self.file_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.file_status_label.setStyleSheet("color: #666666;")
-        preview_layout.addWidget(self.file_status_label)
+        self.file_status_label.setStyleSheet("color: #636369;")  # Cool Gray
+        preview_controls.addWidget(self.file_status_label)
+        preview_layout.addLayout(preview_controls)
 
-        main_layout.addWidget(preview_group, 0, 0, 3, 1)
+        main_layout.addWidget(preview_group)
 
-        # Supported Formats Info
-        formats_group = QGroupBox("Supported Input Formats")
-        formats_layout = QVBoxLayout(formats_group)
-        formats_layout.setSpacing(5)
-        formats_layout.setContentsMargins(15, 20, 15, 15)
-
-        formats_info = QLabel(
-            "• PNG\n"
-            "• JPEG/JPG\n"
-            "• GIF\n"
-            "• TIFF\n"
-            "• WebP\n"
-            "• BMP"
-        )
-        formats_info.setStyleSheet("color: #666666; font-size: 11pt;")
-        formats_layout.addWidget(formats_info)
-        main_layout.addWidget(formats_group, 3, 0)
-
-        # Right side - Output options
+        # Output options
         output_group = QGroupBox("Output Options")
-        output_group.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         output_layout = QVBoxLayout(output_group)
-        output_layout.setSpacing(8)
-        output_layout.setContentsMargins(15, 20, 15, 15)
+        output_layout.setSpacing(4)
+        output_layout.setContentsMargins(8, 16, 8, 8)
 
         # Predefined output formats
         self.format_checks = {}
@@ -210,39 +207,31 @@ class ImageProcessorGUI(QMainWindow):
         for label, size in formats:
             cb = QCheckBox(label)
             cb.setChecked(True)
-            cb.setStyleSheet("QCheckBox { font-size: 11pt; }")
+            cb.setStyleSheet("QCheckBox { font-size: 10pt; }")
             self.format_checks[size] = cb
             output_layout.addWidget(cb)
 
-        main_layout.addWidget(output_group, 0, 1)
+        main_layout.addWidget(output_group)
 
-        # Output Directory section
-        out_dir_group = QGroupBox("Output Directory")
-        out_dir_layout = QVBoxLayout(out_dir_group)
-        out_dir_layout.setSpacing(10)
-        out_dir_layout.setContentsMargins(15, 20, 15, 15)
+        # Process section with output directory
+        process_group = QGroupBox("Output Directory & Processing")
+        process_layout = QVBoxLayout(process_group)
+        process_layout.setSpacing(8)
+        process_layout.setContentsMargins(8, 16, 8, 8)
 
         dir_layout = QHBoxLayout()
-        dir_layout.setSpacing(10)
+        dir_layout.setSpacing(8)
 
         self.dir_path = QLineEdit()
-        self.dir_path.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         default_desktop = os.path.join(os.path.expanduser("~"), "Desktop")
         self.dir_path.setText(default_desktop.replace('/', '\\'))
         dir_layout.addWidget(self.dir_path)
 
-        self.browse_button = QPushButton("Browse...")
+        self.browse_button = QPushButton("Browse")
         self.browse_button.clicked.connect(self.browse_directory)
         dir_layout.addWidget(self.browse_button)
 
-        out_dir_layout.addLayout(dir_layout)
-        main_layout.addWidget(out_dir_group, 1, 1)
-
-        # Process section
-        process_group = QGroupBox("Process")
-        process_layout = QVBoxLayout(process_group)
-        process_layout.setSpacing(10)
-        process_layout.setContentsMargins(15, 20, 15, 15)
+        process_layout.addLayout(dir_layout)
 
         self.process_button = QPushButton("Process Image")
         self.process_button.clicked.connect(self.process_images)
@@ -253,17 +242,34 @@ class ImageProcessorGUI(QMainWindow):
         self.progress_bar.setVisible(False)
         process_layout.addWidget(self.progress_bar)
 
-        main_layout.addWidget(process_group, 2, 1, 2, 1)
+        main_layout.addWidget(process_group)
 
-        # Set column stretch factors
-        main_layout.setColumnStretch(0, 3)  # Preview takes more space
-        main_layout.setColumnStretch(1, 2)  # Options take less space
+        # Supported formats in a more compact layout
+        formats_group = QGroupBox("Supported Formats")
+        formats_layout = QVBoxLayout(formats_group)
+        formats_layout.setSpacing(2)
+        formats_layout.setContentsMargins(8, 16, 8, 8)
+
+        formats_info = QLabel(
+            "PNG • JPEG/JPG • GIF • TIFF • WebP • BMP"
+        )
+        formats_info.setStyleSheet("color: #636369; font-size: 10pt;")  # Cool Gray
+        formats_info.setWordWrap(True)
+        formats_layout.addWidget(formats_info)
+        
+        main_layout.addWidget(formats_group)
+
+        # Set stretch factors
+        main_layout.setStretch(0, 2)  # Preview
+        main_layout.setStretch(1, 1)  # Output options
+        main_layout.setStretch(2, 1)  # Process section
+        main_layout.setStretch(3, 0)  # Formats (minimal space)
 
         # Initialize variables
         self.current_file = None
 
+    # [Previous methods remain unchanged...]
     def select_files(self):
-        """Handle file selection through dialog"""
         file_name, _ = QFileDialog.getOpenFileName(
             self,
             "Select Image File",
@@ -274,18 +280,16 @@ class ImageProcessorGUI(QMainWindow):
             self.process_selected_file(file_name)
 
     def process_selected_file(self, file_name):
-        """Process the selected file"""
         self.current_file = file_name
         self.file_status_label.setText(os.path.basename(file_name))
         self.process_button.setEnabled(True)
         self.update_preview(file_name)
 
     def update_preview(self, file_path):
-        """Update the preview with the selected image"""
         try:
             pixmap = QPixmap(file_path)
             if not pixmap.isNull():
-                max_size = 280
+                max_size = 230
                 scale_factor = min(
                     max_size / pixmap.width(),
                     max_size / pixmap.height()
@@ -304,7 +308,6 @@ class ImageProcessorGUI(QMainWindow):
             self.preview_label.setText(f"Preview error: {str(e)}")
 
     def browse_directory(self):
-        """Handle output directory selection"""
         directory = QFileDialog.getExistingDirectory(
             self,
             "Select Output Directory",
@@ -314,7 +317,6 @@ class ImageProcessorGUI(QMainWindow):
             self.dir_path.setText(directory)
 
     def process_images(self):
-        """Handle image processing"""
         if not self.current_file:
             return
 
@@ -335,12 +337,10 @@ class ImageProcessorGUI(QMainWindow):
 
             logger = logging.getLogger(__name__)
 
-            # Load the image
             processor = ImageProcessor()
             logger.info(f"Loading image from: {self.current_file}")
             image = processor.load_image(self.current_file)
 
-            # Process for each selected format
             for i, format_key in enumerate(selected_formats):
                 format_spec = Config.OUTPUT_FORMATS.get(format_key)
                 if not format_spec:
