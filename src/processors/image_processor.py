@@ -48,63 +48,62 @@ class ImageProcessor:
             output_path (str): Path to save the converted image
         """
         try:
-            # Open the image
+            # Open and process the image using context manager
             print("Opening image")
-            img = Image.open(input_path)
+            with Image.open(input_path) as source_img:
+                # Convert to RGBA to handle transparency
+                print("Converting image to RGBA")
+                img = source_img.convert('RGBA')
 
-            # Convert to RGBA to handle transparency
-            print("Converting image to RGBA")
-            img = img.convert('RGBA')
+                # Create a white background layer the same size as the input image
+                print("Creating white background")
+                background = Image.new('RGBA', img.size, (255, 255, 255, 255))
 
-            # Create a white background layer the same size as the input image
-            print("Creating white background")
-            background = Image.new('RGBA', img.size, (255, 255, 255, 255))
+                # Composite the image onto the white background
+                print("Compositing image onto background")
+                img = Image.alpha_composite(background, img)
 
-            # Composite the image onto the white background
-            print("Compositing image onto background")
-            img = Image.alpha_composite(background, img)
+                # Calculate resize dimensions to fit within 256x256 while maintaining aspect ratio
+                print("Calculating resize dimensions")
+                max_size = 256
+                aspect_ratio = img.width / img.height
 
-            # Calculate resize dimensions to fit within 256x256 while maintaining aspect ratio
-            print("Calculating resize dimensions")
-            max_size = 256
-            aspect_ratio = img.width / img.height
+                if aspect_ratio > 1:
+                    # Width is larger
+                    new_width = max_size
+                    new_height = int(max_size / aspect_ratio)
+                else:
+                    # Height is larger or square
+                    new_height = max_size
+                    new_width = int(max_size * aspect_ratio)
 
-            if aspect_ratio > 1:
-                # Width is larger
-                new_width = max_size
-                new_height = int(max_size / aspect_ratio)
-            else:
-                # Height is larger or square
-                new_height = max_size
-                new_width = int(max_size * aspect_ratio)
+                print(f"Original size: {img.width}x{img.height}")
 
-            print(f"Original size: {img.width}x{img.height}")
+                # Resize image
+                print(f"Resizing image to {new_width}x{new_height}")
+                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
-            # Resize image
-            print(f"Resizing image to {new_width}x{new_height}")
-            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                # Create new 600x256 white canvas
+                print("Creating 600x256 white canvas")
+                final_image = Image.new('RGB', (600, 256), (255, 255, 255))
 
-            # Create new 600x256 white canvas
-            print("Creating 600x256 white canvas")
-            final_image = Image.new('RGB', (600, 256), (255, 255, 255))
+                # Calculate position to center horizontally at x=300 and center vertically
+                x_offset = 300 - (new_width // 2)  # Center at x=300
+                y_offset = (256 - new_height) // 2  # Center vertically
+                print(f"New size: {new_width}x{new_height}, Center Position: (300, {256//2})")
 
-            # Calculate position to center horizontally at x=300 and center vertically
-            x_offset = 300 - (new_width // 2)  # Center at x=300
-            y_offset = (256 - new_height) // 2  # Center vertically
-            print(f"New size: {new_width}x{new_height}, Center Position: (300, {256//2})")
+                # Paste resized image onto canvas
+                print("Pasting image onto canvas")
+                final_image.paste(img, (x_offset, y_offset))
 
-            # Paste resized image onto canvas
-            print("Pasting image onto canvas")
-            final_image.paste(img, (x_offset, y_offset))
+                # Set DPI to 203
+                dpi = 203
 
-            # Set DPI to 203
-            dpi = 203
+                # Save as uncompressed BMP with specific DPI
+                print(f"Saving BMP with {dpi} DPI")
+                final_image.save(output_path, 'BMP', dpi=(dpi, dpi))
 
-            # Save as uncompressed BMP with specific DPI
-            print(f"Saving BMP with {dpi} DPI")
-            final_image.save(output_path, 'BMP', dpi=(dpi, dpi))
-
-            print("Image converted and saved successfully")
+                print("Image converted and saved successfully")
 
         except Exception as e:
             print(f"Error converting image: {str(e)}")

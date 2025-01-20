@@ -52,7 +52,7 @@ class ImageProcessorGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Image Processor")
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(800, 500)  # Increased size to accommodate new info
 
         # Create main widget and layout
         main_widget = QWidget()
@@ -76,6 +76,21 @@ class ImageProcessorGUI(QMainWindow):
         self.file_status_label = QLabel("No file selected")
         self.file_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         left_layout.addWidget(self.file_status_label)
+
+        # Supported Formats Info
+        formats_group = QGroupBox("Supported Input Formats")
+        formats_layout = QVBoxLayout(formats_group)
+        formats_info = QLabel(
+            "• PNG\n"
+            "• JPEG/JPG\n"
+            "• GIF\n"
+            "• TIFF\n"
+            "• WebP\n"
+            "• BMP"
+        )
+        formats_info.setStyleSheet("QLabel { color: #666666; }")
+        formats_layout.addWidget(formats_info)
+        left_layout.addWidget(formats_group)
 
         main_layout.addWidget(left_panel)
 
@@ -146,7 +161,7 @@ class ImageProcessorGUI(QMainWindow):
             self,
             "Select Image File",
             "",
-            "Image Files (*.png *.jpg *.jpeg *.bmp *.gif);;All Files (*)"
+            "Image Files (*.png *.jpg *.jpeg *.bmp *.gif *.tiff *.webp);;All Files (*)"
         )
         if file_name:
             self.process_selected_file(file_name)
