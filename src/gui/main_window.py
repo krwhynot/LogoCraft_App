@@ -298,7 +298,7 @@ class ImageProcessorGUI(QMainWindow):
         try:
             pixmap = QPixmap(file_path)
             if not pixmap.isNull():
-                max_size = 180
+                max_size = 200  # Increased from 180 to ensure full preview visibility
                 scale_factor = min(
                     max_size / pixmap.width(),
                     max_size / pixmap.height()
