@@ -97,14 +97,16 @@ class DraggableImageLabel(QLabel):
     def __init__(self):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setMinimumSize(250, 200)
+        self.setMinimumSize(250, 250)  # Increased height to account for high DPI displays
         self.setStyleSheet("""
             QLabel {
                 background-color: white;
                 border: 2px dashed #636369;
                 border-radius: 4px;
                 color: #231347;
-                padding: 4px;
+                padding: 12px;
+                margin: 4px;
+                min-height: 230px;
             }
             QLabel:hover {
                 border-color: #108375;
