@@ -1,26 +1,5 @@
 # LogoCraft Installation Guide
 
-## System Requirements
-
-### Windows
-- Windows 10 or later
-- Python 3.8 or later
-- 4GB RAM minimum (8GB recommended)
-- 500MB free disk space
-
-### macOS
-- macOS 10.14 (Mojave) or later
-- Python 3.8 or later
-- 4GB RAM minimum (8GB recommended)
-- 500MB free disk space
-
-### Linux
-- Modern Linux distribution (Ubuntu 20.04+, Fedora 34+, etc.)
-- Python 3.8 or later
-- 4GB RAM minimum (8GB recommended)
-- 500MB free disk space
-- X11 or Wayland display server
-
 ## Prerequisites
 
 1. **Python Installation**
@@ -37,14 +16,8 @@
      ```bash
      # Ubuntu/Debian
      sudo apt-get install python3-dev build-essential libgl1-mesa-dev
+     ```
 
-     # Fedora
-     sudo dnf install python3-devel gcc mesa-libGL-devel
-     ```
-   - macOS: Xcode Command Line Tools:
-     ```bash
-     xcode-select --install
-     ```
 
 ## Installation Steps
 
