@@ -197,7 +197,7 @@ class ImageProcessorGUI(QMainWindow):
         return group
 
     @handle_errors(logger)
-    def select_files(self):
+    def select_files(self, sender=None):
         file_name, _ = QFileDialog.getOpenFileName(
             self,
             "Select Image File",
