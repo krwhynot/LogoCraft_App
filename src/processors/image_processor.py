@@ -1,7 +1,5 @@
 from PIL import Image
 from src.config import OutputFormat
-import math
-import os
 
 class ImageProcessor:
     @staticmethod
@@ -87,32 +85,6 @@ class ImageProcessor:
         except Exception as e:
             print(f"Error converting image: {str(e)}")
             raise
-
-    @staticmethod
-    def process_multiple_images(input_files: list, output_directory: str) -> None:
-        """
-        Process multiple images using the conversion specifications
-
-        Args:
-            input_files (list): List of input file paths
-            output_directory (str): Directory for output files
-        """
-        import os
-
-        # Create output directory if it doesn't exist
-        os.makedirs(output_directory, exist_ok=True)
-
-        for input_file in input_files:
-            # Generate output filename
-            filename = os.path.basename(input_file)
-            name, _ = os.path.splitext(filename)
-            output_path = os.path.join(output_directory, f"{name}_converted.bmp")
-
-            try:
-                ImageProcessor.convert_printlogo_to_bmp_specs(input_file, output_path)
-                print(f"Successfully converted: {filename}")
-            except Exception as e:
-                print(f"Error converting {filename}: {str(e)}")
 
     @staticmethod
     def convert_rptlogo_to_bmp_specs(image: Image.Image, output_path: str) -> None:

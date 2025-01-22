@@ -215,11 +215,11 @@ class ImageProcessorGUI(QMainWindow):
 
         self.format_checks = {}
         formats = [
-            ('Logo (300×300)', 'Logo.png'),
-            ('Small Logo (136×136)', 'Smalllogo.png'),
-            ('KD Logo (140×112)', 'KDlogo.png'),
-            ('RPT Logo (155×110)', 'RPTlogo.bmp'),
-            ('Print Logo (Thermal)', 'PRINTLOGO.bmp')
+            ('Logo PNG (300×300)', 'Logo.png'),
+            ('Small Logo PNG (136×136)', 'Smalllogo.png'),
+            ('KD Logo PNG (140×112)', 'KDlogo.png'),
+            ('RPT Logo BMP (155×110)', 'RPTlogo.bmp'),
+            ('Print Logo BMP (Thermal)', 'PRINTLOGO.bmp')
         ]
 
         for label, filename in formats:
