@@ -9,14 +9,9 @@
   <h3 align="center">LogoCraft App</h3>
 
   <p align="center">
-    A high-performance desktop application for efficient image and logo conversion
     <br />
     <a href="#documentation"><strong>Explore the Documentation »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/yourusername/LogoCraft_App/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/yourusername/LogoCraft_App/issues">Request Feature</a>
   </p>
 </div>
 
@@ -36,13 +31,13 @@
   <img src="LogoCraftGUI.png" alt="LogoCraft Screenshot" />
 </p>
 
-LogoCraft App is a specialized desktop application for professional image processing and logo conversion. Built with Python and PyQt6, it provides a robust platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
+LogoCraft App is an application for logo conversion. Built with Python and PyQt6, it provides a platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
 Key Features:
 
 - High DPI support for modern displays
 - Multi-format image processing support
-- Professional-grade image conversion
+- Image conversion
 - User-friendly graphical interface
 - Batch processing capabilities
 - Custom output format specifications
@@ -67,8 +62,6 @@ Follow these steps to set up LogoCraft App locally:
 ```bash
 python -m pip install --upgrade pip
 ```
-
-# <<<<<<< HEAD
 
 ### Installation
 
@@ -126,4 +119,3 @@ For detailed information about the application:
 
 - [Installation Guide](INSTALLATION.md) - Complete setup instructions
 - [Architecture Documentation](ARCHITECTURE.md) - System design and technical details
-  > > > > > > > 1c13855ee2e16be0b67fc188b9d0479fbd387edf
