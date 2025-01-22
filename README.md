@@ -121,4 +121,4 @@ For detailed information about the application:
 
 - [Installation Guide](INSTALLATION.md) - Complete setup instructions
 - [Architecture Documentation](ARCHITECTURE.md) - System design and technical details
-  > > > > > > > 1c13855ee2e16be0b67fc188b9d0479fbd387edf
+
