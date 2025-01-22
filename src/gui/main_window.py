@@ -4,7 +4,7 @@ import logging
 from typing import Dict, Optional
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QFileDialog, QLabel
+    QFileDialog, QLabel, QCheckBox
 )
 from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QPixmap, QMouseEvent, QDragEnterEvent, QDropEvent
@@ -238,7 +238,7 @@ class ImageProcessorGUI(QMainWindow):
             self.preview_label.setText(f"Preview error: {str(e)}")
 
     @handle_errors(logger)
-    def browse_directory(self):
+    def browse_directory(self, sender=None):
         directory = QFileDialog.getExistingDirectory(
             self,
             "Select Output Directory",
