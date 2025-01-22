@@ -1,71 +1,122 @@
-# LogoCraft: Professional Logo Conversion Solution
+# LogoCraft App
 
-## Application Overview
+<br />
+<div align="center">
+  <a href="https://github.com/yourusername/LogoCraft_App">
+    <img src="HungerRush_Icon.ico" alt="Logo" width="80" height="80">
+  </a>
 
-LogoCraft streamlines logo management for restaurant businesses, providing a professional-grade image conversion platform. Our application efficiently transforms logos across multiple formats to meet diverse business communication needs.
+  <h3 align="center">LogoCraft App</h3>
 
-## Core Capabilities
+  <p align="center">
+    A high-performance desktop application for efficient image and logo conversion
+    <br />
+    <a href="#documentation"><strong>Explore the Documentation »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/yourusername/LogoCraft_App/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/yourusername/LogoCraft_App/issues">Request Feature</a>
+  </p>
+</div>
 
-### Supported Image Formats
-- PNG
-- JPEG
-- BMP
-- Photoshop Files (PSD)
-- HEIF Images
+## Table of Contents
 
-### Standardized Output Configurations
-- Standard logo (300x300 PNG)
-- Compact logo (136x136 PNG)
-- Kitchen Display logo (140x112 PNG)
-- Report logo (155x110 BMP)
-- Print-optimized format
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Documentation](#documentation)
 
-## System Prerequisites
+## About The Project
 
-### Technical Requirements
-- Operating System: Windows 10/11
-- Python Version: 3.8+
-- Recommended: Isolated development environment
+<!-- Insert GUI screenshot here -->
+![LogoCraft Screenshot](docs/screenshot.png)
 
-## Implementation Guide
+LogoCraft App is a specialized desktop application for professional image processing and logo conversion. Built with Python and PyQt6, it provides a robust platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
-### Quick Setup Process
+Key Features:
+* High DPI support for modern displays
+* Multi-format image processing support
+* Professional-grade image conversion
+* User-friendly graphical interface
+* Batch processing capabilities
+* Custom output format specifications
 
-1. Repository Acquisition
-   ```bash
-   git clone https://github.com/krwhynot/LogoCraft_App.git
-   cd LogoCraft_App
-   ```
+### Built With
 
-2. Environment Configuration
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   source .venv/bin/activate  # macOS/Linux
-   ```
+* Python 3.8+
+* Pillow==9.5.0
+* PyQt6==6.6.1
+* PyQt6-Qt6==6.6.1
+* PyQt6-sip==13.6.0
 
-3. Dependency Installation
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Getting Started
 
-## Operational Workflow
+Follow these steps to set up LogoCraft App locally:
 
-1. Launch Application
-2. Select Source Logo
-3. Choose Desired Output Formats
-4. Specify Destination Directory
-5. Execute Conversion
+### Prerequisites
 
-## Technical Architecture
+* Python 3.8 or higher
+* pip package manager
 
-### Key Technologies
-- PyQt6: Modern UI Framework
-- Pillow: Advanced Image Processing
-- pillow-heif: Specialized Format Support
-
-### Deployment
 ```bash
-python build.py
+python -m pip install --upgrade pip
 ```
 
+<<<<<<< HEAD
+=======
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/LogoCraft_App.git
+```
+
+2. Create and activate a virtual environment
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+3. Install required packages
+```bash
+pip install -r requirements.txt
+```
+
+4. Launch the application
+```bash
+python run.py
+```
+
+## Usage
+
+LogoCraft App provides a straightforward interface for image processing:
+
+1. Load images via drag-and-drop or file selection
+2. Choose desired output formats:
+   - Logo (300×300)
+   - Small Logo (136×136)
+   - KD Logo (140×112)
+   - RPT Logo (155×110)
+   - Print Logo (Thermal)
+3. Select output directory
+4. Process images with a single click
+
+Supported Formats:
+- PNG
+- JPEG/JPG
+- BMP
+- GIF
+- TIFF
+- WebP
+
+## Documentation
+
+For detailed information about the application:
+
+- [Installation Guide](INSTALLATION.md) - Complete setup instructions
+- [Architecture Documentation](ARCHITECTURE.md) - System design and technical details
+>>>>>>> 1c13855ee2e16be0b67fc188b9d0479fbd387edf
