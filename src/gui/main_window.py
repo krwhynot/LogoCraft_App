@@ -344,34 +344,30 @@ class ImageProcessorGUI(QMainWindow):
             from src.processors.image_processor import ImageProcessor
             from src.config import Config
             import os
-            import logging
-
-            logger = logging.getLogger(__name__)
-
             processor = ImageProcessor()
-            logger.info(f"Loading image from: {self.current_file}")
+            print(f"Loading image from: {self.current_file}")
             image = processor.load_image(self.current_file)
 
             for i, format_key in enumerate(selected_formats):
                 format_spec = Config.OUTPUT_FORMATS.get(format_key)
                 if not format_spec:
-                    logger.warning(f"No format specification found for {format_key}")
+                    print(f"No format specification found for {format_key}")
                     continue
 
                 output_dir = self.dir_path.text()
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
-                    logger.info(f"Created output directory: {output_dir}")
+                    print(f"Created output directory: {output_dir}")
 
                 output_name = os.path.join(output_dir, format_key).replace('/', '\\')
-                logger.info(f"Processing image for format: {format_key}")
-                logger.info(f"Output path: {output_name}")
+                print(f"Processing image for format: {format_key}")
+                print(f"Output path: {output_name}")
 
                 processor.process_image(image, format_spec, output_name)
                 self.progress_bar.setValue(i + 1)
 
             self.statusBar().showMessage("Processing complete!")
-            logger.info("Image processing completed successfully")
+            print("Image processing completed successfully")
 
         except Exception as e:
             self.statusBar().showMessage(f"Error processing image: {str(e)}")

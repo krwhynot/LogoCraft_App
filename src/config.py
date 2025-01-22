@@ -13,7 +13,7 @@ class OutputFormat:
 
 class Config:
     """Application configuration and constants."""
-    SUPPORTED_FORMATS = ('.png', '.jpeg', '.jpg', '.bmp', '.gif')
+    SUPPORTED_FORMATS = ('.png', '.jpeg', '.jpg', '.bmp', '.gif', '.tiff', '.webp')
     OUTPUT_FORMATS = {
         'Logo.png': OutputFormat(
             dimensions=(300, 300),

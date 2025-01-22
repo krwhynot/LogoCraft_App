@@ -1,6 +1,5 @@
-from PIL import Image, ImageEnhance
+from PIL import Image
 from src.config import OutputFormat
-import numpy as np
 import math
 import os
 
@@ -9,26 +8,6 @@ class ImageProcessor:
     def load_image(file_path: str) -> Image.Image:
         """Load an image file."""
         return Image.open(file_path)
-
-    @staticmethod
-    def validate_image_metrics(image: Image.Image) -> dict:
-        """Validate image metrics against target specifications."""
-        img_array = np.array(image)
-
-        metrics = {
-            'mean_luminance': np.mean(img_array),
-            'std_dev': np.std(img_array),
-            'dynamic_range': np.ptp(img_array)
-        }
-
-        # Compare against target metrics
-        target_metrics = {
-            'mean_luminance': 230.55,
-            'std_dev': 75.08,
-            'dynamic_range': 255.0
-        }
-
-        return metrics
 
     @staticmethod
     def convert_printlogo_to_bmp_specs(input_path: str, output_path: str) -> None:

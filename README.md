@@ -1,89 +1,132 @@
-# LogoCraft: Professional Logo Conversion Solution
+# LogoCraft App
 
-## Application Overview
 
-LogoCraft streamlines logo management for restaurant businesses, providing a professional-grade image conversion platform. Our application efficiently transforms logos across multiple formats to meet diverse business communication needs.
+<br />
+<div align="center">
+  <a href="https://github.com/yourusername/LogoCraft_App">
+    <img src="HungerRush_Icon.ico" alt="Logo" width="80" height="80">
+  </a>
 
-## Core Capabilities
+  <h3 align="center">LogoCraft App</h3>
 
-### Supported Image Formats
-- PNG
-- JPEG
-- BMP
-- Photoshop Files (PSD)
-- HEIF Images
+  <p align="center">
+    A high-performance desktop application for efficient image and logo conversion
+    <br />
+    <a href="#documentation"><strong>Explore the Documentation »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/yourusername/LogoCraft_App/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/yourusername/LogoCraft_App/issues">Request Feature</a>
+  </p>
+</div>
 
-### Standardized Output Configurations
-- Standard logo (300x300 PNG)
-- Compact logo (136x136 PNG)
-- Kitchen Display logo (140x112 PNG)
-- Report logo (155x110 BMP)
-- Print-optimized format
+## Table of Contents
 
-## System Prerequisites
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
 
-### Technical Requirements
-- Operating System: Windows 10/11
-- Python Version: 3.8+
-- Recommended: Isolated development environment
 
-## Implementation Guide
+## About The Project
 
-### Quick Setup Process
+LogoCraft App is a specialized desktop application for professional image processing and logo conversion. Built with Python and PyQt6, it provides a robust platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
-1. Repository Acquisition
-   ```bash
-   git clone https://github.com/krwhynot/LogoCraft_App.git
-   cd LogoCraft_App
-   ```
+Key Features:
+* High DPI support for modern displays
+* Multi-format image processing support
+* Professional-grade image conversion
+* User-friendly graphical interface
+* Batch processing capabilities
+* Custom output format specifications
 
-2. Environment Configuration
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   source .venv/bin/activate  # macOS/Linux
-   ```
+### Built With
 
-3. Dependency Installation
-   ```bash
-   pip install -r requirements.txt
-   ```
+* Pillow==9.5.0
+* pillow-heif==0.13.0
+* PyQt6==6.6.1
+* PyQt6-Qt6==6.6.1
+* PyQt6-sip==13.6.0
+* numpy
+* scipy
+* scikit-image
 
-## Operational Workflow
+## Getting Started
 
-1. Launch Application
-2. Select Source Logo
-3. Choose Desired Output Formats
-4. Specify Destination Directory
-5. Execute Conversion
+Follow these steps to set up LogoCraft App locally:
 
-## Technical Architecture
+### Prerequisites
 
-### Key Technologies
-- PyQt6: Modern UI Framework
-- Pillow: Advanced Image Processing
-- pillow-heif: Specialized Format Support
+* Python 3.8 or higher
+* pip package manager
 
-### Deployment
 ```bash
-python build.py
+python -m pip install --upgrade pip
 ```
 
-## Collaboration Opportunities
+### Installation
 
-### Contribution Framework
-- Comprehensive issue reporting welcomed
-- Structured pull request process
-- Adherence to coding standards expected
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/LogoCraft_App.git
+```
 
-## Performance Metrics
-- Multi-format conversion
-- Efficient processing
-- Consistent output quality
+2. Create and activate a virtual environment
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
 
-## Support Channels
-- GitHub Issue Tracking
-- Direct Technical Communication
-- Continuous Improvement Commitment
+3. Install required packages
+```bash
+pip install -r requirements.txt
+```
 
-**Professional Recommendation**: Maintain original logo archives for reference and version control.
+4. Launch the application
+```bash
+python run.py
+```
+
+## Usage
+
+LogoCraft App provides a straightforward interface for image processing:
+
+1. Load images via drag-and-drop or file selection
+2. Choose desired output formats:
+   - Logo (300×300)
+   - Small Logo (136×136)
+   - KD Logo (140×112)
+   - RPT Logo (155×110)
+   - Print Logo (Thermal)
+3. Select output directory
+4. Process images with a single click
+
+Supported Formats:
+- PNG
+- JPEG/JPG
+- BMP
+- GIF
+- TIFF
+- WebP
+
+## Contributing
+
+Contributions are welcome:
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+[contributors-shield]: https://img.shields.io/github/contributors/yourusername/LogoCraft_App.svg?style=for-the-badge
+[contributors-url]: https://github.com/yourusername/LogoCraft_App/graphs/contributors
+[license-shield]: https://img.shields.io/github/license/yourusername/LogoCraft_App.svg?style=for-the-badge
+[license-url]: https://github.com/yourusername/LogoCraft_App/blob/master/LICENSE

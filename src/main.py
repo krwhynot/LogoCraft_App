@@ -1,21 +1,9 @@
 import sys
 import os
-import logging
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt
 from src.gui import ImageProcessorGUI
-
-# Set up logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logocraft.log'),
-        logging.StreamHandler()  # Also log to console
-    ]
-)
-logger = logging.getLogger(__name__)
 
 def main():
     """Main application entry point"""
@@ -34,19 +22,15 @@ def main():
         
         if os.path.exists(icon_path):
             app.setWindowIcon(QIcon(icon_path))
-            logger.info(f"Icon loaded from {icon_path}")
-        else:
-            logger.warning(f"Icon not found at {icon_path}")
-
+        
         window = ImageProcessorGUI()
         window.setWindowIcon(QIcon(icon_path))  # Also set icon for the main window
         window.show()
 
-        logger.info("Application started successfully")
         sys.exit(app.exec())
 
     except Exception as e:
-        logger.error(f"Application error: {str(e)}", exc_info=True)
+        print(f"Application error: {str(e)}")
         raise
 
 if __name__ == '__main__':
