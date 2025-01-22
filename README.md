@@ -9,14 +9,9 @@
   <h3 align="center">LogoCraft App</h3>
 
   <p align="center">
-    A high-performance desktop application for efficient image and logo conversion
     <br />
     <a href="#documentation"><strong>Explore the Documentation »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/yourusername/LogoCraft_App/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/yourusername/LogoCraft_App/issues">Request Feature</a>
   </p>
 </div>
 
