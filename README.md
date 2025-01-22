@@ -117,6 +117,8 @@ Supported Formats:
 - TIFF
 - WebP
 
+
+
 ## Documentation
 
 For detailed information about the application:
