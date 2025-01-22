@@ -32,26 +32,29 @@
 
 ## About The Project
 
-<!-- Insert GUI screenshot here -->
-![LogoCraft Screenshot](docs/screenshot.png)
+<p align="center">
+  <img src="LogoCraftGUI.png" alt="LogoCraft Screenshot" />
+</p>
+
 
 LogoCraft App is a specialized desktop application for professional image processing and logo conversion. Built with Python and PyQt6, it provides a robust platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
 Key Features:
-* High DPI support for modern displays
-* Multi-format image processing support
-* Professional-grade image conversion
-* User-friendly graphical interface
-* Batch processing capabilities
-* Custom output format specifications
+
+- High DPI support for modern displays
+- Multi-format image processing support
+- Professional-grade image conversion
+- User-friendly graphical interface
+- Batch processing capabilities
+- Custom output format specifications
 
 ### Built With
 
-* Python 3.8+
-* Pillow==9.5.0
-* PyQt6==6.6.1
-* PyQt6-Qt6==6.6.1
-* PyQt6-sip==13.6.0
+- Python 3.8+
+- Pillow==9.5.0
+- PyQt6==6.6.1
+- PyQt6-Qt6==6.6.1
+- PyQt6-sip==13.6.0
 
 ## Getting Started
 
@@ -59,8 +62,8 @@ Follow these steps to set up LogoCraft App locally:
 
 ### Prerequisites
 
-* Python 3.8 or higher
-* pip package manager
+- Python 3.8 or higher
+- pip package manager
 
 ```bash
 python -m pip install --upgrade pip
@@ -69,22 +72,26 @@ python -m pip install --upgrade pip
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/LogoCraft_App.git
 ```
 
 2. Create and activate a virtual environment
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
 3. Install required packages
+
 ```bash
 pip install -r requirements.txt
 ```
 
 4. Launch the application
+
 ```bash
 python run.py
 ```
@@ -104,6 +111,7 @@ LogoCraft App provides a straightforward interface for image processing:
 4. Process images with a single click
 
 Supported Formats:
+
 - PNG
 - JPEG/JPG
 - BMP
