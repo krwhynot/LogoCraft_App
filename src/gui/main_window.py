@@ -1,117 +1,28 @@
+"""Main window implementation for LogoCraft app."""
 import os
+import logging
+from typing import Dict, Optional
 from PyQt6.QtWidgets import (
-    QMainWindow, QWidget, QPushButton, QLabel, QFileDialog,
-    QProgressBar, QCheckBox, QLineEdit, QGroupBox, QVBoxLayout,
-    QHBoxLayout, QSizePolicy
+    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QFileDialog, QLabel
 )
 from PyQt6.QtCore import Qt, QPoint
 from PyQt6.QtGui import QPixmap, QMouseEvent, QDragEnterEvent, QDropEvent
+from src.processors.image_processor import ImageProcessor
+from src.config import config_manager
+from src.core.error_handler import handle_errors
+from .style_config import StyleConfig
+from .component_factory import ComponentFactory
 
-STYLESHEET = """
-QMainWindow {
-    background-color: #f5f5f5;
-}
-QGroupBox {
-    font-weight: bold;
-    border: 1px solid #636369;
-    border-radius: 4px;
-    margin-top: 6px;
-    padding-top: 8px;
-    color: #231347;
-    background-color: white;
-}
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 6px;
-    padding: 0px 3px;
-}
-QPushButton {
-    background-color: #108375;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    min-width: 70px;
-    font-weight: bold;
-}
-QPushButton:hover {
-    background-color: #9FCDC7;
-}
-QPushButton:disabled {
-    background-color: #636369;
-}
-QLineEdit {
-    padding: 4px;
-    border: 1px solid #636369;
-    border-radius: 3px;
-    background-color: white;
-    min-height: 20px;
-}
-QProgressBar {
-    border: 1px solid #636369;
-    border-radius: 3px;
-    text-align: center;
-    background-color: white;
-    max-height: 12px;
-}
-QProgressBar::chunk {
-    background-color: #108375;
-    border-radius: 2px;
-}
-QCheckBox {
-    spacing: 8px;
-    color: #231347;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin: 2px 0px;
-}
-QCheckBox:hover {
-    background-color: #f0f0f0;
-    border: 1px solid #108375;
-}
-QCheckBox::indicator {
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    background-color: white;
-}
-QCheckBox::indicator:unchecked {
-    border: 2px solid #636369;
-}
-QCheckBox::indicator:checked {
-    border: 2px solid #108375;
-    background-color: #108375;
-    image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-}
-QLabel {
-    color: #231347;
-}
-QStatusBar {
-    background-color: #f5f5f5;
-    color: #231347;
-    padding: 2px 4px;
-}
-"""
+logger = logging.getLogger(__name__)
 
 class DraggableImageLabel(QLabel):
+    """Draggable image preview label with drop support"""
     def __init__(self):
         super().__init__()
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setMinimumSize(250, 250)  # Increased height to account for high DPI displays
-        self.setStyleSheet("""
-            QLabel {
-                background-color: white;
-                border: 2px dashed #636369;
-                border-radius: 4px;
-                color: #231347;
-                padding: 12px;
-                margin: 4px;
-                min-height: 230px;
-            }
-            QLabel:hover {
-                border-color: #108375;
-            }
-        """)
+        self.setMinimumSize(250, 250)
+        self.setStyleSheet(StyleConfig.get_draggable_label_style())
         self.dragging = False
         self.offset = QPoint()
         self.image_pos = QPoint()
@@ -171,49 +82,58 @@ class DraggableImageLabel(QLabel):
             super().paintEvent(event)
 
 class ImageProcessorGUI(QMainWindow):
+    """Main application window"""
     def __init__(self):
         super().__init__()
+        self.current_file: Optional[str] = None
+        self.format_checks: Dict[str, QCheckBox] = {}
+        self.image_processor = ImageProcessor()
+        self._setup_ui()
+        logger.info("Application window initialized")
+    
+    def _setup_ui(self):
+        """Initialize the user interface"""
         self.setWindowTitle("LogoCraft Image Processor")
         self.setMinimumSize(400, 600)
-        self.setStyleSheet(STYLESHEET)
-
-        # Create main widget and layout
+        self.setStyleSheet(StyleConfig.get_stylesheet())
+        
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
         main_layout = QVBoxLayout(main_widget)
         main_layout.setSpacing(6)
         main_layout.setContentsMargins(6, 6, 6, 6)
 
-        # Preview section
-        preview_group = QGroupBox("Image Preview")
-        preview_layout = QVBoxLayout(preview_group)
-        preview_layout.setSpacing(4)
-        preview_layout.setContentsMargins(6, 12, 6, 6)
+        main_layout.addWidget(self._create_preview_group())
+        main_layout.addWidget(self._create_output_group())
+        main_layout.addWidget(self._create_process_group())
+        main_layout.addWidget(self._create_formats_group())
+
+    def _create_preview_group(self) -> QWidget:
+        """Create the preview section"""
+        group, layout = ComponentFactory.create_group_box("Image Preview")
 
         self.preview_label = DraggableImageLabel()
-        preview_layout.addWidget(self.preview_label)
+        layout.addWidget(self.preview_label)
 
-        preview_controls = QHBoxLayout()
-        preview_controls.setSpacing(4)
-        self.select_button = QPushButton("Select Image")
-        self.select_button.clicked.connect(self.select_files)
-        preview_controls.addWidget(self.select_button)
+        controls = QHBoxLayout()
+        controls.setSpacing(4)
 
-        self.file_status_label = QLabel("No file selected")
-        self.file_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.file_status_label.setStyleSheet("color: #636369; font-size: 9pt;")
-        preview_controls.addWidget(self.file_status_label)
-        preview_layout.addLayout(preview_controls)
+        self.select_button = ComponentFactory.create_button(
+            "Select Image",
+            callback=self.select_files
+        )
+        controls.addWidget(self.select_button)
 
-        main_layout.addWidget(preview_group)
+        self.file_status_label = ComponentFactory.create_file_status_label()
+        controls.addWidget(self.file_status_label)
 
-        # Output options
-        output_group = QGroupBox("Output Options")
-        output_layout = QVBoxLayout(output_group)
-        output_layout.setSpacing(2)
-        output_layout.setContentsMargins(6, 12, 6, 6)
+        layout.addLayout(controls)
+        return group
 
-        self.format_checks = {}
+    def _create_output_group(self) -> QWidget:
+        """Create the output options section"""
+        group, layout = ComponentFactory.create_group_box("Output Options")
+
         formats = [
             ('Logo PNG (300×300)', 'Logo.png'),
             ('Small Logo PNG (136×136)', 'Smalllogo.png'),
@@ -223,63 +143,60 @@ class ImageProcessorGUI(QMainWindow):
         ]
 
         for label, filename in formats:
-            cb = QCheckBox(label)
-            cb.setChecked(True)
-            cb.setStyleSheet("QCheckBox { font-size: 9pt; }")
-            self.format_checks[filename] = cb
-            output_layout.addWidget(cb)
+            checkbox = ComponentFactory.create_checkbox(label, checked=True)
+            self.format_checks[filename] = checkbox
+            layout.addWidget(checkbox)
 
-        main_layout.addWidget(output_group)
+        return group
 
-        # Process section with output directory
-        process_group = QGroupBox("Output & Processing")
-        process_layout = QVBoxLayout(process_group)
-        process_layout.setSpacing(4)
-        process_layout.setContentsMargins(6, 12, 6, 6)
+    def _create_process_group(self) -> QWidget:
+        """Create the processing section"""
+        group, layout = ComponentFactory.create_group_box("Output & Processing")
 
         dir_layout = QHBoxLayout()
         dir_layout.setSpacing(4)
 
-        self.dir_path = QLineEdit()
-        self.dir_path.setStyleSheet("font-size: 9pt;")
         default_desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-        self.dir_path.setText(default_desktop.replace('/', '\\'))
+        self.dir_path = ComponentFactory.create_input_field(
+            default_text=default_desktop.replace('/', '\\')
+        )
         dir_layout.addWidget(self.dir_path)
 
-        self.browse_button = QPushButton("Browse")
-        self.browse_button.setMaximumWidth(70)
-        self.browse_button.clicked.connect(self.browse_directory)
+        self.browse_button = ComponentFactory.create_button(
+            "Browse",
+            callback=self.browse_directory,
+            width=70
+        )
         dir_layout.addWidget(self.browse_button)
 
-        process_layout.addLayout(dir_layout)
+        layout.addLayout(dir_layout)
 
-        self.process_button = QPushButton("Process Image")
-        self.process_button.clicked.connect(self.process_images)
-        self.process_button.setEnabled(False)
-        process_layout.addWidget(self.process_button)
+        self.process_button = ComponentFactory.create_button(
+            "Process Image",
+            callback=self.process_images,
+            enabled=False
+        )
+        layout.addWidget(self.process_button)
 
-        self.progress_bar = QProgressBar()
-        self.progress_bar.setVisible(False)
-        process_layout.addWidget(self.progress_bar)
+        self.progress_bar = ComponentFactory.create_progress_bar()
+        layout.addWidget(self.progress_bar)
 
-        main_layout.addWidget(process_group)
+        return group
 
-        # Supported formats
-        formats_group = QGroupBox("Formats")
-        formats_layout = QVBoxLayout(formats_group)
-        formats_layout.setSpacing(2)
-        formats_layout.setContentsMargins(6, 12, 6, 6)
+    def _create_formats_group(self) -> QWidget:
+        """Create the supported formats section"""
+        group, layout = ComponentFactory.create_group_box("Formats")
 
-        formats_info = QLabel("PNG • JPEG/JPG • GIF • TIFF • WebP • BMP")
-        formats_info.setStyleSheet("color: #636369; font-size: 8pt;")
+        formats_info = ComponentFactory.create_label(
+            "PNG • JPEG/JPG • GIF • TIFF • WebP • BMP",
+            parent=group
+        )
         formats_info.setWordWrap(True)
-        formats_layout.addWidget(formats_info)
+        layout.addWidget(formats_info)
         
-        main_layout.addWidget(formats_group)
+        return group
 
-        # Initialize variables
-        self.current_file = None
-
+    @handle_errors(logger)
     def select_files(self):
         file_name, _ = QFileDialog.getOpenFileName(
             self,
@@ -290,13 +207,15 @@ class ImageProcessorGUI(QMainWindow):
         if file_name:
             self.process_selected_file(file_name)
 
-    def process_selected_file(self, file_name):
+    @handle_errors(logger)
+    def process_selected_file(self, file_name: str):
         self.current_file = file_name
         self.file_status_label.setText(os.path.basename(file_name))
         self.process_button.setEnabled(True)
         self.update_preview(file_name)
 
-    def update_preview(self, file_path):
+    @handle_errors(logger)
+    def update_preview(self, file_path: str):
         try:
             pixmap = QPixmap(file_path)
             if not pixmap.isNull():
@@ -318,6 +237,7 @@ class ImageProcessorGUI(QMainWindow):
         except Exception as e:
             self.preview_label.setText(f"Preview error: {str(e)}")
 
+    @handle_errors(logger)
     def browse_directory(self):
         directory = QFileDialog.getExistingDirectory(
             self,
@@ -327,7 +247,9 @@ class ImageProcessorGUI(QMainWindow):
         if directory:
             self.dir_path.setText(directory)
 
-    def process_images(self):
+    @handle_errors(logger)
+    def process_images(self, *args):
+        """Process the selected image"""
         if not self.current_file:
             return
 
@@ -341,35 +263,25 @@ class ImageProcessorGUI(QMainWindow):
         self.progress_bar.setValue(0)
 
         try:
-            from src.processors.image_processor import ImageProcessor
-            from src.config import Config
-            import os
-            processor = ImageProcessor()
-            print(f"Loading image from: {self.current_file}")
-            image = processor.load_image(self.current_file)
+            image = self.image_processor.load_image(self.current_file)
+            output_dir = self.dir_path.text()
+            
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+                logger.info(f"Created output directory: {output_dir}")
 
             for i, format_key in enumerate(selected_formats):
-                format_spec = Config.OUTPUT_FORMATS.get(format_key)
+                format_spec = config_manager.get_format(format_key)
                 if not format_spec:
-                    print(f"No format specification found for {format_key}")
+                    logger.warning(f"No format specification found for {format_key}")
                     continue
 
-                output_dir = self.dir_path.text()
-                if not os.path.exists(output_dir):
-                    os.makedirs(output_dir)
-                    print(f"Created output directory: {output_dir}")
-
-                output_name = os.path.join(output_dir, format_key).replace('/', '\\')
-                print(f"Processing image for format: {format_key}")
-                print(f"Output path: {output_name}")
-
-                processor.process_image(image, format_spec, output_name)
+                output_path = os.path.join(output_dir, format_key).replace('/', '\\')
+                self.image_processor.process_image(image, format_spec, output_path)
                 self.progress_bar.setValue(i + 1)
 
             self.statusBar().showMessage("Processing complete!")
-            print("Image processing completed successfully")
+            logger.info("Image processing completed successfully")
 
-        except Exception as e:
-            self.statusBar().showMessage(f"Error processing image: {str(e)}")
         finally:
             self.progress_bar.setVisible(False)

@@ -1,6 +1,5 @@
 # LogoCraft App
 
-
 <br />
 <div align="center">
   <a href="https://github.com/yourusername/LogoCraft_App">
@@ -29,9 +28,12 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
-
+- [Documentation](#documentation)
 
 ## About The Project
+
+<!-- Insert GUI screenshot here -->
+![LogoCraft Screenshot](docs/screenshot.png)
 
 LogoCraft App is a specialized desktop application for professional image processing and logo conversion. Built with Python and PyQt6, it provides a robust platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
@@ -45,14 +47,11 @@ Key Features:
 
 ### Built With
 
+* Python 3.8+
 * Pillow==9.5.0
-* pillow-heif==0.13.0
 * PyQt6==6.6.1
 * PyQt6-Qt6==6.6.1
 * PyQt6-sip==13.6.0
-* numpy
-* scipy
-* scikit-image
 
 ## Getting Started
 
@@ -112,3 +111,9 @@ Supported Formats:
 - TIFF
 - WebP
 
+## Documentation
+
+For detailed information about the application:
+
+- [Installation Guide](INSTALLATION.md) - Complete setup instructions
+- [Architecture Documentation](ARCHITECTURE.md) - System design and technical details
