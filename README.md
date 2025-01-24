@@ -31,9 +31,6 @@
   <img src="LogoCraftGUI.png" alt="LogoCraft Screenshot" />
 </p>
 
-
-LogoCraft App is an application for logo conversion. Built with Python and PyQt6, it provides a platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
-=======
 LogoCraft App is an  application for logo conversion. Built with Python and PyQt6, it provides a  platform for handling various image formats, with a focus on maintaining image quality and processing efficiency.
 
 
